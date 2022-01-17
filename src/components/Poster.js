@@ -5,7 +5,7 @@ import {
 	Progress,
 	Badge,
 } from "antd";
-const Poster = ({ img, title, count }) => {
+const Poster = ({ img, title, count}) => {
 	return (
 			<img
 				className="poster"

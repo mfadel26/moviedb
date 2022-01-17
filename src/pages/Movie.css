@@ -81,11 +81,24 @@
   color: white;
   border-radius: 20px;
 }
+.close > span {
+  padding: 5px 10px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  background: #090135;
+  color: white;
+  border-radius: 20px;
+}
+.close >span:hover {
+  background-color: #f00808;
+  color: white;
+}
 h4 {
   padding: 10px 0;
   color: #01d277;
 }
 @media (min-width: 700px) {
+ 
   .infoContainer {
     display: flex;
     flex-wrap: wrap;
@@ -93,4 +106,9 @@ h4 {
   .infoContainer > * {
     flex: 1 50%;
  }
+}
+@media only screen and (max-width: 600px) {
+  .close > span {
+   display: none;
+  }
 }

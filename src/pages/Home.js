@@ -12,7 +12,7 @@ const contentStyle = {
 	borderRadius:5,
 	background: `linear-gradient(to right, #e8eff0, #e3f4f5, #c6f1f0)`
 };
-function Home() {
+function Home(props) {
 	const history = useHistory();
 	const [data, setData] = useState([]);
 	const [tabid, setTabid] = useState("1");
@@ -20,8 +20,8 @@ function Home() {
 	useEffect(() => {
 		getData();
 	}, []);
-
 	const getData = (e) => {
+		
 		try {
 			getApiCall2("movie/now_playing", {}).then((result) => {
 				setDataCarousel(result?.data);
@@ -32,6 +32,7 @@ function Home() {
 		try {
 			getApiCall2("movie/top_rated", {}).then((result) => {
 				setData(result?.data);
+				props.load(false)	
 			});
 		} catch (error) {
 			console.log(error);
@@ -43,14 +44,15 @@ function Home() {
 			ctgr = "/tv";
 		}
 		history.push("/Movie/" + e + ctgr);
-		console.log(e);
 	};
 
 	const callback = (key) => {
+		props.load(true)	
 		if (key === "1") {
 			try {
 				getApiCall2("movie/top_rated", {}).then((result) => {
 					setData(result?.data);
+					props.load(false)	
 				});
 			} catch (error) {
 				console.log(error);
@@ -60,6 +62,7 @@ function Home() {
 			try {
 				getApiCall2("tv/on_the_air", {}).then((result) => {
 					setData(result?.data);
+					props.load(false)
 				});
 			} catch (error) {
 				console.log(error);
@@ -69,6 +72,7 @@ function Home() {
 			try {
 				getApiCall2("movie/top_rated", {}).then((result) => {
 					setData(result?.data);
+					props.load(false)
 				});
 			} catch (error) {
 				console.log(error);
@@ -78,6 +82,7 @@ function Home() {
 			try {
 				getApiCall2("movie/now_playing", {}).then((result) => {
 					setData(result?.data);
+					props.load(false)
 				});
 			} catch (error) {
 				console.log(error);
@@ -94,7 +99,7 @@ function Home() {
 				style={{
 					...style,
 					color: "black",
-					fontSize: "15px",
+					fontSize: "25px",
 					lineHeight: "1.5715",
 				}}
 				onClick={onClick}
@@ -110,7 +115,7 @@ function Home() {
 				style={{
 					...style,
 					color: "black",
-					fontSize: "15px",
+					fontSize: "25px",
 					lineHeight: "1.5715",
 				}}
 				onClick={onClick}
