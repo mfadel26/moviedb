@@ -2,12 +2,15 @@
   "name": "moviedb",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://mfadel26.github.io/movdb",
   "dependencies": {
+    "-": "0.0.1",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
     "antd": "^4.18.3",
     "axios": "^0.24.0",
+    "gh-pages": "^3.2.3",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "node-sass": "^7.0.1",
@@ -21,11 +24,14 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "5.0.0",
     "sass-loader": "^12.4.0",
+    "save-dev": "0.0.1-security",
     "style-loader": "^3.3.1",
     "web-vitals": "^2.1.3"
   },
   "scripts": {
     "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
