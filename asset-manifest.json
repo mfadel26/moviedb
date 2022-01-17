@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/movdb/static/css/main.1c9ff7e1.css",
+    "main.js": "/movdb/static/js/main.4f7b79d0.js",
+    "index.html": "/movdb/index.html",
+    "main.1c9ff7e1.css.map": "/movdb/static/css/main.1c9ff7e1.css.map",
+    "main.4f7b79d0.js.map": "/movdb/static/js/main.4f7b79d0.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1c9ff7e1.css",
+    "static/js/main.4f7b79d0.js"
+  ]
+}
