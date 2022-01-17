@@ -3,7 +3,7 @@ import moment from "moment";
 import "./Movie.css";
 import Poster from "../components/Poster";
 import PropTypes from "prop-types";
-import { Progress, Image, Badge } from "antd";
+import { Progress, Image, Badge, message } from "antd";
 import { getApiCall2 } from "../actions/fetching";
 import { useParams, useHistory } from "react-router-dom";
 
@@ -26,14 +26,14 @@ function Homes(props) {
 				setData(result?.data);
 			});
 		} catch (error) {
-			console.log(error);
+			message.error('Network Error');
 		}
 		try {
 			getApiCall2(id?.ctgr + "/" + id?.id + "/similar", { page: 2 }).then((result) => {
 				setDatasimilar(result?.data);
 			});
 		} catch (error) {
-			console.log(error);
+			message.error('Network Error');
 		}
 	};
 	const getMovie = (e) => {

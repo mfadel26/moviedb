@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Progress, Carousel, Image, Badge, Tabs, Button } from "antd";
+import { Progress, Carousel, Image, Badge, Tabs, Button, message } from "antd";
 import { getApiCall2 } from "../actions/fetching";
 import "./Movie.css";
 import { useHistory } from "react-router-dom";
@@ -20,14 +20,13 @@ function Home(props) {
 	useEffect(() => {
 		getData();
 	}, []);
-	const getData = (e) => {
-		
+	const getData = () => {
 		try {
 			getApiCall2("movie/now_playing", {}).then((result) => {
 				setDataCarousel(result?.data);
 			});
 		} catch (error) {
-			console.log(error);
+			message.error('Network Error');
 		}
 		try {
 			getApiCall2("movie/top_rated", {}).then((result) => {
@@ -35,7 +34,7 @@ function Home(props) {
 				props.load(false)	
 			});
 		} catch (error) {
-			console.log(error);
+			message.error('Network Error');
 		}
 	};
 	const getIdMovie = (e) => {
@@ -55,7 +54,7 @@ function Home(props) {
 					props.load(false)	
 				});
 			} catch (error) {
-				console.log(error);
+				message.error('Network Error');
 			}
 		}
 		if (key === "2") {
@@ -65,7 +64,7 @@ function Home(props) {
 					props.load(false)
 				});
 			} catch (error) {
-				console.log(error);
+				message.error('Network Error');
 			}
 		}
 		if (key === "3") {
@@ -75,7 +74,7 @@ function Home(props) {
 					props.load(false)
 				});
 			} catch (error) {
-				console.log(error);
+				message.error('Network Error');
 			}
 		}
 		if (key === "4") {
@@ -85,7 +84,7 @@ function Home(props) {
 					props.load(false)
 				});
 			} catch (error) {
-				console.log(error);
+				message.error('Network Error');
 			}
 		}
 
