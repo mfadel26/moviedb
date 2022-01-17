@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from "react";
-import "antd/dist/antd.css";
-import { Layout, Menu, Breadcrumb } from "antd";
-import { Carousel, Image } from "antd";
+import { Progress, Carousel, Image, Badge, Tabs, Button } from "antd";
 import { getApiCall2 } from "../actions/fetching";
-import { Card, Col, Row } from "antd";
-const { Meta } = Card;
-const { Header, Content, Footer } = Layout;
-
+import "./Movie.css";
+import { useHistory } from "react-router-dom";
+const { TabPane } = Tabs;
+const contentStyle = {
+	color: "#000000",
+	textAlign: "center",
+	background: "#001529",
+	position: "relative",
+	borderRadius:5,
+	background: `linear-gradient(to right, #e8eff0, #e3f4f5, #c6f1f0)`
+};
 function Home() {
+	const history = useHistory();
 	const [data, setData] = useState([]);
+	const [tabid, setTabid] = useState("1");
+	const [dataCarousel, setDataCarousel] = useState([]);
 	useEffect(() => {
 		getData();
 	}, []);
@@ -16,63 +24,237 @@ function Home() {
 	const getData = (e) => {
 		try {
 			getApiCall2("movie/now_playing", {}).then((result) => {
+				setDataCarousel(result?.data);
+			});
+		} catch (error) {
+			console.log(error);
+		}
+		try {
+			getApiCall2("movie/top_rated", {}).then((result) => {
 				setData(result?.data);
 			});
 		} catch (error) {
 			console.log(error);
 		}
 	};
+	const getIdMovie = (e) => {
+		let ctgr = "/movie";
+		if (tabid === "2") {
+			ctgr = "/tv";
+		}
+		history.push("/Movie/" + e + ctgr);
+		console.log(e);
+	};
 
+	const callback = (key) => {
+		if (key === "1") {
+			try {
+				getApiCall2("movie/top_rated", {}).then((result) => {
+					setData(result?.data);
+				});
+			} catch (error) {
+				console.log(error);
+			}
+		}
+		if (key === "2") {
+			try {
+				getApiCall2("tv/on_the_air", {}).then((result) => {
+					setData(result?.data);
+				});
+			} catch (error) {
+				console.log(error);
+			}
+		}
+		if (key === "3") {
+			try {
+				getApiCall2("movie/top_rated", {}).then((result) => {
+					setData(result?.data);
+				});
+			} catch (error) {
+				console.log(error);
+			}
+		}
+		if (key === "4") {
+			try {
+				getApiCall2("movie/now_playing", {}).then((result) => {
+					setData(result?.data);
+				});
+			} catch (error) {
+				console.log(error);
+			}
+		}
+
+		setTabid(key);
+	};
+	const SampleNextArrow = (props) => {
+		const { className, style, onClick } = props;
+		return (
+			<div
+				className={className}
+				style={{
+					...style,
+					color: "black",
+					fontSize: "15px",
+					lineHeight: "1.5715",
+				}}
+				onClick={onClick}
+			/>
+		);
+	};
+
+	const SamplePrevArrow = (props) => {
+		const { className, style, onClick } = props;
+		return (
+			<div
+				className={className}
+				style={{
+					...style,
+					color: "black",
+					fontSize: "15px",
+					lineHeight: "1.5715",
+				}}
+				onClick={onClick}
+			/>
+		);
+	};
+
+	const settings = {
+		nextArrow: <SampleNextArrow />,
+		prevArrow: <SamplePrevArrow />,
+	};
 	return (
 		<div>
-			<Layout>
-				{console.log(data)}
-				<Header style={{ position: "fixed", zIndex: 1, width: "100%" }}>
-					<div className="logo" />
-					<Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}>
-						<Menu.Item key="1">nav 1</Menu.Item>
-						<Menu.Item key="2">nav 2</Menu.Item>
-						<Menu.Item key="3">nav 3</Menu.Item>
-					</Menu>
-				</Header>
-				<Content className="site-layout" style={{ padding: "0 50px", marginTop: 64 }}>
-					<Breadcrumb style={{ margin: "16px 0" }}>
-						<Breadcrumb.Item>Home</Breadcrumb.Item>
-						<Breadcrumb.Item>List</Breadcrumb.Item>
-						<Breadcrumb.Item>App</Breadcrumb.Item>
-					</Breadcrumb>
-					<div style={{ whiteSpace: "nowrap" }}>
-						{data &&
-							data.results &&
-							data?.results.map((val, i) => {
-								return (
-									<div
-										style={{
-											whiteSpace: "nowrap",
-											overflow: "auto",
-											display: "inline-block",
-										}}>
-										<Card
-											hoverable
-											style={{ width: 240 }}
-											cover={
-												<Image
-													width={200}
-													src={"https://image.tmdb.org/t/p/w500/" + val.poster_path}
+			{/* <Layout > */}
+				<Carousel autoplay effect="scrollx" autoplaySpeed={2000} arrows {...settings}>
+					{dataCarousel &&
+						dataCarousel.results &&
+						dataCarousel?.results.map((val, i) => {
+							return (
+								<div>
+									<h3 style={contentStyle}>
+										<Image
+											preview={false}
+											width={330}
+											src={"https://image.tmdb.org/t/p/original/" + val.poster_path}
+										/>{" "}
+									</h3>
+								</div>
+							);
+						})}
+				</Carousel>
+				<Tabs defaultActiveKey="1" onChange={callback}>
+					<TabPane
+						tab={
+							<Button
+								style={{
+									backgroundColor: tabid === "1" ? "#032541" : "white",
+									borderRadius: 40,
+									color: tabid !== "1" ? "black" : "white",
+								}}>
+								Streaming
+							</Button>
+						}
+						key={1}></TabPane>
+					<TabPane
+						tab={
+							<Button
+								style={{
+									backgroundColor: tabid === "2" ? "#032541" : "white",
+									borderRadius: 40,
+									color: tabid !== "2" ? "black" : "white",
+								}}>
+								On TV
+							</Button>
+						}
+						key={2}></TabPane>
+					<TabPane
+						tab={
+							<Button
+								style={{
+									backgroundColor: tabid === "3" ? "#032541" : "white",
+									borderRadius: 40,
+									color: tabid !== "3" ? "black" : "white",
+								}}>
+								For Rent
+							</Button>
+						}
+						key={3}></TabPane>
+					<TabPane
+						tab={
+							<Button
+								style={{
+									backgroundColor: tabid === "4" ? "#032541" : "white",
+									borderRadius: 40,
+									color: tabid !== "4" ? "black" : "white",
+								}}>
+								In Theaters
+							</Button>
+						}
+						key={4}></TabPane>
+				</Tabs>
+				<div
+					style={{
+						color: "#000000",
+						overflowY: "hidden",
+						display: "flex",
+						textAlign: "center",
+						// background: "#F5F5F5",
+						position: "relative",
+						borderRadius:10,
+						background:`linear-gradient(to right, #e8eff0, #e3f4f5, #c6f1f0)`
+					}}>
+					{data &&
+						data.results &&
+						data?.results.map((val, i) => {
+							return (
+								<div
+									style={{
+										display: "flex",
+										padding: 10,
+									}}>
+									<div className="poster">
+										<Badge
+											count={
+												<Progress
+													style={{ backgroundColor: "black", borderRadius: 150 }}
+													width={35}
+													type="circle"
+													trailColor="#F0F0F0"
+													format={(percent) => (
+														<p
+															style={{
+																fontWeight: "bold",
+																color: "white",
+																textAlign: "center",
+																marginTop: 5,
+																fontSize: 8,
+															}}>
+															{percent}%
+														</p>
+													)}
+													strokeColor={{
+														"0%": "#108ee9",
+														"100%": "#21D07A",
+													}}
+													percent={val.vote_average * 10}
 												/>
-											}>
-											<Meta title="Europe Street beat" description="www.instagram.com" />
-										</Card>
+											}
+											showZero
+											offset={[-20, 220]}>
+											<Image
+												onClick={() => getIdMovie(val.id)}
+												style={{ borderRadius: 10 }}
+												preview={false}
+												width={150}
+												src={"https://image.tmdb.org/t/p/w500/" + val.poster_path}
+											/>
+										</Badge>
 									</div>
-								);
-							})}
-					</div>
-				</Content>
-				<Footer style={{ textAlign: "center" }}>
-					Ant Design ©2018 Created by Ant UED
-				</Footer>
-			</Layout>
-			,
+								</div>
+							);
+						})}
+				</div>
+			{/* </Layout> */}
 		</div>
 	);
 }
